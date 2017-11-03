@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">BluetoothMusic</string>
     <string name="icon">icon</string>
-    <string name="name">name</string>
-    <string name="mac">mac</string>
+    <string name="title">title</string>
+    <string name="subtitle">subtitle</string>
     <string name="enable_app">Enable app</string>
     <string name="refresh">Refresh</string>
 </resources>

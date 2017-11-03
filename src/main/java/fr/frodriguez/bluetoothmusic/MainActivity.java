@@ -5,6 +5,9 @@ import android.bluetooth.BluetoothDevice;
 import android.bluetooth.BluetoothClass.Device.Major;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -21,9 +24,11 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 
-// TODO: constraint layout for activity_main & listview_device
+// TODO: constraint layout for activity_main & listview_one_icon_two_text
 // TODO: respect of Google UI guidelines (paddings/margins)
 // TODO: Get permissions at runtime
+// TODO: javadoc
+// TODO: disable landscape
 
 public class MainActivity extends AppCompatActivity {
 
@@ -36,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+
+        // Initialize the list of available players
+        Utils.initPlayerList(this);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
         populateListview();
     }
 
@@ -44,81 +59,33 @@ public class MainActivity extends AppCompatActivity {
         populateListview();
     }
 
+
+    // Get list of bluetooth device and display them in the listview
     private void populateListview() {
         Log.d("FLZ", "get bt devices");
 
+        // Get paired bluetooth devices
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if(bluetoothAdapter == null) {
-            Toast.makeText(this, "Your device does not have bluetooth", Toast.LENGTH_LONG).show();
-            return;
-        }
         // If disabled, can't see paired BTDevices
-        if(!bluetoothAdapter.isEnabled()) {
+        if(bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
             Toast.makeText(this, "Please enable bluetooth", Toast.LENGTH_LONG).show();
             return;
         }
-        // Get paired bluetooth devices
         Set<android.bluetooth.BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         if(pairedDevices == null) {
             Toast.makeText(this, "Error getting paired bluetooth devices", Toast.LENGTH_LONG).show();
             return;
         }
 
-        // Convert into list of device
-        List<BTDevice> btDevices = convertBluetoothDevices(pairedDevices);
+        // Convert into list of BTDevice
+        List<BTDevice> btDevices = Utils.convertBluetoothDevices(this, pairedDevices);
 
         // Populate the listview
         DeviceListviewAdapter adapter = new DeviceListviewAdapter(this, btDevices);
         listView.setAdapter(adapter);
-    }
-
-    /**
-     * Convert API BluetoothDevice list to a displayable BTDevice list
-     */
-    //TODO add devices in sharedPref but not int paired devices
-    @NonNull
-    private List<BTDevice> convertBluetoothDevices(@NonNull Set<BluetoothDevice> pairedBluetoothDevices) {
-        SharedPreferences sp = this.getSharedPreferences("sharedpref", Context.MODE_PRIVATE); //TODO static value
-
-        List<BTDevice> btDevices = new ArrayList<>();
-        for (BluetoothDevice pairedDevice : pairedBluetoothDevices) {
-            BTDevice btDevice = new BTDevice(pairedDevice.getName(), pairedDevice.getAddress());
-            int icon;
-            switch (pairedDevice.getBluetoothClass().getMajorDeviceClass()) {
-                case Major.AUDIO_VIDEO:
-                    icon = R.drawable.ic_headset_black_48dp;
-                    break;
-                case Major.COMPUTER:
-                    icon = R.drawable.ic_laptop_chromebook_black_48dp;
-                    break;
-                case Major.PHONE:
-                    icon = R.drawable.ic_phone_android_black_48dp;
-                    break;
-                case Major.WEARABLE:
-                    icon = R.drawable.ic_watch_black_48dp;
-                    break;
-                default:
-                    icon = R.drawable.ic_devices_other_black_48dp;
-                    break;
-            }
-            btDevice.icon = icon;
-
-            btDevice.watched = sp.contains(btDevice.mac);
-
-            btDevices.add(btDevice);
-        }
-        return btDevices;
+        listView.setOnItemClickListener(adapter);
     }
 
 
 
-    @OnClick(R.id.btnTest1)
-    public void test1() {
-        PlayerController.startPlayer(this, PlayerController.GOOGLE_PLAYER);
-    }
-
-    @OnClick(R.id.btnTest2)
-    public void test2() {
-        PlayerController.startSpotifyPlayer(this);
-    }
 }

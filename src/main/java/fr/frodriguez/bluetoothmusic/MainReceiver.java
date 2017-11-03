@@ -23,7 +23,18 @@ public class MainReceiver extends BroadcastReceiver {
                 Log.d("FLZ", device.getName() + " is now connected :)");
                 Toast.makeText(context, device.getName() + " is now connected :)", Toast.LENGTH_LONG).show();
 
-                PlayerController.startPlayer(context, PlayerController.GOOGLE_PLAYER);
+                String packageName = sp.getString(device.getAddress(), null);
+                int startMethod = Utils.PLAYERS_PACKAGES.get(packageName);
+
+                switch (startMethod) {
+                    case Utils.START_METHOD_KEYEVENT:
+                        Utils.startPlayer(context, sp.getString(device.getAddress(), null));
+                        break;
+
+                    case Utils.START_METHOD_STARTAPP_KEYEVENT:
+                        Utils.startPlayerWithUI(context, sp.getString(device.getAddress(), null));
+                        break;
+                }
             }
         }
 
@@ -35,6 +46,5 @@ public class MainReceiver extends BroadcastReceiver {
             }
         }
     }
-
 
 }

@@ -2,7 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="fr.frodriguez.bluetoothmusic.MainActivity"
+    tools:context="fr.frodriguez.bluetoothmusic.activity.MainActivity"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -11,30 +11,19 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/enable_app"
-        android:layout_alignBaseline="@+id/checkBox"
-        />
+        android:layout_alignBaseline="@+id/checkBox" />
 
     <CheckBox
         android:id="@+id/checkBox"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/textView"
-        />
-
-    <Button
-        android:id="@+id/btnRefresh"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/refresh"
-        android:layout_alignBaseline="@id/checkBox"
-        android:layout_centerHorizontal="true"/>
-
+        android:layout_toEndOf="@+id/textView" />
 
     <ListView
         android:id="@+id/listView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/btnRefresh" />
+        android:layout_below="@+id/checkBox" />
 
 </RelativeLayout>

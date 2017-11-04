@@ -4,11 +4,11 @@ import android.graphics.drawable.Drawable;
 
 /**
  * By FloZone on 02/11/2017.
- */
-
-/**
+ *
  * Represent a music player, for the listview
  */
+
+@SuppressWarnings("WeakerAccess")
 public class Player {
     Drawable icon;
     String name;

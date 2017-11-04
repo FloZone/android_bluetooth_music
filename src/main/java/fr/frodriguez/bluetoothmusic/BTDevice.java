@@ -1,13 +1,13 @@
 package fr.frodriguez.bluetoothmusic;
 
 /**
- * Created by Florian on 11/10/2017.
- */
-
-/**
+ * By FloZone on 11/10/2017.
+ *
  * Represent a bluetooth device, for the listview
  */
-class BTDevice {
+
+@SuppressWarnings("WeakerAccess")
+public class BTDevice {
     int icon;
     String name;
     String mac;

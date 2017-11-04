@@ -2,40 +2,42 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="4dp"
-    android:background="#fcfcfc">
-
-    <!-- TODO titre sur moitié supérieure de la ligne -->
-    <!-- TODO sous titre sur moitié inférieure de la ligne -->
+    android:layout_height="72dp"
+    android:background="#fcfcfc"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
 
     <ImageView
         android:id="@+id/icon"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
+        android:layout_marginEnd="16dp"
         android:src="@drawable/ic_devices_other_black_48dp"
         android:contentDescription="@string/icon" />
 
-    <TextView
-        android:id="@+id/title"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@id/icon"
-        android:layout_marginStart="18dp"
-        android:textSize="14sp"
-        android:text="@string/title" />
+        android:orientation="vertical"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@id/icon">
 
-    <TextView
-        android:id="@+id/subtitle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toEndOf="@id/icon"
-        android:layout_below="@+id/title"
-        android:layout_marginStart="18dp"
-        android:textSize="12sp"
-        android:text="@string/subtitle" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:text="@string/title" />
+
+        <TextView
+            android:id="@+id/subtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:text="@string/subtitle" />
+
+    </LinearLayout>
 
 </RelativeLayout>

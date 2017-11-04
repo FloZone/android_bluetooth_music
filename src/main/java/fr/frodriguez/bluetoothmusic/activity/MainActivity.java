@@ -16,6 +16,7 @@ import fr.frodriguez.bluetoothmusic.BTDevice;
 import fr.frodriguez.bluetoothmusic.BTDeviceListviewAdapter;
 import fr.frodriguez.bluetoothmusic.R;
 
+
 /**
  * By FloZone on 06/10/2017.
  */

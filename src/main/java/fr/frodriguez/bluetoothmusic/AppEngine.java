@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -96,7 +97,6 @@ public final class AppEngine {
      * Starts the given music player with the correct method
      */
     public static void startPlayer(@NonNull Context context, @Nullable String packageName) {
-        Log.d("FLZ", "try to start " + packageName + " player");
         if (packageName == null) return;
 
         int startMethod = AppDefines.SUPPORTED_PLAYERS.get(packageName);
@@ -116,6 +116,7 @@ public final class AppEngine {
      */
     public static void startPlayerKeyevent(@NonNull Context context, @NonNull String packageName) {
         Intent playIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        playIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
         playIntent.setPackage(packageName);
         // Key down
         playIntent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PLAY));
@@ -128,12 +129,26 @@ public final class AppEngine {
     /**
      * Starts the given music player application and then, a PLAY key event
      */
-    //TODO start player with ui
-    public static void startPlayerWithUI(@NonNull Context context, @NonNull String packageName) {
-        // StartIntentForPackage puis startPlayer();
-        //Intent spotify = new Intent("com.spotify.mobile.android.ui.widget.NEXT");
-        //spotify.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
-        //context.sendBroadcast(spotify);
+    public static void startPlayerWithUI(@NonNull final Context context, @NonNull final String packageName) {
+        PackageManager pm = context.getPackageManager();
+        Intent appIntent = pm.getLaunchIntentForPackage(packageName);
+
+        // Package is not installed
+        if(appIntent == null) {
+            return;
+        }
+        // Start the given app
+        appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(appIntent);
+
+        // Let enough time for the app to start, then send PLAY key event
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                startPlayerKeyevent(context, packageName);
+            }
+        }, 1000 * 5);
     }
 
     /**

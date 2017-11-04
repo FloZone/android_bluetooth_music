@@ -57,7 +57,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
 
             // Row in green if the device is watched
             if (btDevice.player != null) {
-                convertView.setBackgroundResource(R.color.colorAccent);
+                convertView.setBackgroundResource(R.color.colorBackgroundSelected);
             } else {
                 convertView.setBackgroundResource(R.color.colorBackground);
             }
@@ -100,7 +100,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
                         if (player != null) {
                             btDevice.player = player.packageName;
                             AppEngine.saveWatchedState(getContext(), btDevice);
-                            btview.setBackgroundResource(R.color.colorAccent);
+                            btview.setBackgroundResource(R.color.colorBackgroundSelected);
                             Toast.makeText(getContext(), "Watching for " + btDevice.name + " connection", Toast.LENGTH_SHORT).show();
                             dismissDialog();
                         }

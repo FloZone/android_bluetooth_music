@@ -81,6 +81,8 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
             }
             // Watch the device
             else {
+                //TODO manually add a player package
+
                 // Inflate the layout XML
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 View dialogView = inflater.inflate(R.layout.dialog_players, null);

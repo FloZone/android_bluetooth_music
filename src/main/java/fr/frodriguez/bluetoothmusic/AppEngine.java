@@ -128,7 +128,7 @@ public final class AppEngine {
     /**
      * Starts the given music player application and then, a PLAY key event
      */
-    //TODO
+    //TODO start player with ui
     public static void startPlayerWithUI(@NonNull Context context, @NonNull String packageName) {
         // StartIntentForPackage puis startPlayer();
         //Intent spotify = new Intent("com.spotify.mobile.android.ui.widget.NEXT");

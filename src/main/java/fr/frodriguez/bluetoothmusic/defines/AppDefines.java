@@ -1,7 +1,5 @@
 package fr.frodriguez.bluetoothmusic.defines;
 
-import android.graphics.Color;
-
 import java.util.HashMap;
 
 /**
@@ -9,6 +7,8 @@ import java.util.HashMap;
  */
 
 public final class AppDefines {
+
+    public final static int PERMISSION_REQUEST_BLUETOOTH = 1;
 
     public final static int START_METHOD_KEYEVENT = 0;
     public final static int START_METHOD_STARTAPP = 1;
@@ -20,8 +20,5 @@ public final class AppDefines {
         SUPPORTED_PLAYERS.put("com.sec.android.app.music", START_METHOD_KEYEVENT);
         SUPPORTED_PLAYERS.put("com.spotify.music", START_METHOD_STARTAPP);
     }
-
-    public static final int COLOR_LIGHT_GREEN = Color.rgb(200, 255, 200);
-    public static final int COLOR_LIGHT_GRAY = Color.rgb(252, 252, 252);
 
 }

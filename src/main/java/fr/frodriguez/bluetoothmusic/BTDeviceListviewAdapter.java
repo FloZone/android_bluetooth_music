@@ -15,8 +15,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import fr.frodriguez.bluetoothmusic.defines.AppDefines;
-
 /**
  * By FloZone on 11/10/2017.
  *
@@ -59,9 +57,9 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
 
             // Row in green if the device is watched
             if (btDevice.player != null) {
-                convertView.setBackgroundColor(AppDefines.COLOR_LIGHT_GREEN);
+                convertView.setBackgroundResource(R.color.colorAccent);
             } else {
-                convertView.setBackgroundColor(AppDefines.COLOR_LIGHT_GRAY);
+                convertView.setBackgroundResource(R.color.colorBackground);
             }
         }
 
@@ -79,7 +77,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
             if (btDevice.player != null) {
                 btDevice.player = null;
                 AppEngine.saveWatchedState(getContext(), btDevice);
-                btview.setBackgroundColor(AppDefines.COLOR_LIGHT_GRAY);
+                btview.setBackgroundResource(R.color.colorBackground);
             }
             // Watch the device
             else {
@@ -100,7 +98,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
                         if (player != null) {
                             btDevice.player = player.packageName;
                             AppEngine.saveWatchedState(getContext(), btDevice);
-                            btview.setBackgroundColor(AppDefines.COLOR_LIGHT_GREEN);
+                            btview.setBackgroundResource(R.color.colorAccent);
                             Toast.makeText(getContext(), "Watching for " + btDevice.name + " connection", Toast.LENGTH_SHORT).show();
                             dismissDialog();
                         }

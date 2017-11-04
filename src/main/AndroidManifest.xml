@@ -3,10 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.frodriguez.bluetoothmusic"
     android:versionCode="000001"
-    android:versionName="0.1">
+    android:versionName="0.2">
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
-    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
 
     <application
         android:allowBackup="true"

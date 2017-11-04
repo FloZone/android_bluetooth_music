@@ -1,7 +1,12 @@
 package fr.frodriguez.bluetoothmusic.activity;
 
+import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -15,27 +20,29 @@ import fr.frodriguez.bluetoothmusic.AppEngine;
 import fr.frodriguez.bluetoothmusic.BTDevice;
 import fr.frodriguez.bluetoothmusic.BTDeviceListviewAdapter;
 import fr.frodriguez.bluetoothmusic.R;
+import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 
 
 /**
  * By FloZone on 06/10/2017.
  */
 
-// TODO: constraint layout for all xml
-// TODO: respect of Google UI guidelines (paddings/margins)
-// TODO: Get permissions at runtime
-
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.listView)
-    ListView listView;
+    private boolean bluetoothPermissionDenied;
+    @BindView(R.id.listView) ListView listView;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Set up the action bar
+        if(getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         ButterKnife.bind(this);
+
+        bluetoothPermissionDenied = false;
 
         // Initialize the list of available players
         AppEngine.initPlayerList(this);
@@ -44,7 +51,33 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        populateListview();
+
+        // If the user denied bluetooth permission, check here to prevent an onResume() loop
+        if(bluetoothPermissionDenied) {
+            return;
+        }
+        // If the bluetooth permission is not already granted, ask to the user
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, AppDefines.PERMISSION_REQUEST_BLUETOOTH);
+        }
+        else {
+            populateListview();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case AppDefines.PERMISSION_REQUEST_BLUETOOTH: {
+                // If the user granted bluetooth permission
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    populateListview();
+                } else {
+                    Toast.makeText(this, "You must grant bluetooth permission", Toast.LENGTH_SHORT).show();
+                    bluetoothPermissionDenied = true;
+                }
+            }
+        }
     }
 
     /**

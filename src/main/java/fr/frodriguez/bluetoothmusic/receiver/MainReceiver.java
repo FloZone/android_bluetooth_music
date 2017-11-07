@@ -21,8 +21,10 @@ public class MainReceiver extends BroadcastReceiver {
         String action = intent.getAction();
         if (action == null) return;
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        // If the app is not "enabled"
+        if(!AppEngine.isWatcherEnabled(context)) return;
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         // When a bluetooth device connects
         if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
             // Get the device object

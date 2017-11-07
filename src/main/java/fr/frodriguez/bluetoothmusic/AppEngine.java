@@ -30,6 +30,14 @@ import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 public final class AppEngine {
 
     /**
+     * Return whether the app watch for bluetooth device connection or not
+     */
+    public static boolean isWatcherEnabled(@NonNull Context context) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        return sp.getBoolean(AppDefines.SHARED_PREF_KEY_ENABLED, AppDefines.SHARED_PREF_DEFAULT_ENABLED );
+    }
+
+    /**
      * Convert API BluetoothDevice list to a displayable BTDevice list
      */
     //TODO add devices that are in sharedPref but not int paired devices

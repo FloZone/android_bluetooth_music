@@ -2,20 +2,26 @@ package fr.frodriguez.bluetoothmusic.activity;
 
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import com.kyleduo.switchbutton.SwitchButton;
 
 import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import fr.frodriguez.bluetoothmusic.AppEngine;
 import fr.frodriguez.bluetoothmusic.BTDevice;
 import fr.frodriguez.bluetoothmusic.BTDeviceListviewAdapter;
@@ -29,8 +35,12 @@ import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 
 public class MainActivity extends AppCompatActivity {
 
+    @BindView(R.id.switchButton)
+    SwitchButton switchButton;
+    @BindView(R.id.listView)
+    ListView listView;
+
     private boolean bluetoothPermissionDenied;
-    @BindView(R.id.listView) ListView listView;
 
 
     @Override
@@ -44,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
 
         bluetoothPermissionDenied = false;
 
+        // Init switch button
+        switchButton.setChecked(AppEngine.isWatcherEnabled(this));
         // Initialize the list of available players
         AppEngine.initPlayerList(this);
     }
@@ -104,6 +116,17 @@ public class MainActivity extends AppCompatActivity {
         BTDeviceListviewAdapter adapter = new BTDeviceListviewAdapter(this, btDevices);
         listView.setAdapter(adapter);
         listView.setOnItemClickListener(adapter);
+    }
+
+    /**
+     * On switch click
+     */
+    @OnClick(R.id.switchButton)
+    public void onSwitchClick() {
+        SharedPreferences.Editor spe = PreferenceManager.getDefaultSharedPreferences(this).edit();
+        // Enable or disable the "watcher"
+        spe.putBoolean(AppDefines.SHARED_PREF_KEY_ENABLED, switchButton.isChecked());
+        spe.apply();
     }
 
 }

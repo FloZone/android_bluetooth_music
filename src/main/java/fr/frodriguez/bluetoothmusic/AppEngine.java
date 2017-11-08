@@ -25,7 +25,6 @@ import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 /**
  * By FloZone on 03/11/2017.
  */
-//TODO When populating, unwatch devices if the player no longer exists
 @SuppressWarnings("WeakerAccess")
 public final class AppEngine {
 
@@ -73,11 +72,17 @@ public final class AppEngine {
             // Get the music player for this device if it is watched
             btDevice.player = sp.getString(btDevice.mac, null);
 
-            // Get the player icon
-            try {
-                ApplicationInfo info = packageManager.getApplicationInfo(btDevice.player, PackageManager.GET_META_DATA);
-                btDevice.playerIcon = packageManager.getApplicationIcon(info);
-            } catch (Exception ignored) {
+            // Get the player icon if the device is watched
+            if(btDevice.player != null) {
+                try {
+                    ApplicationInfo info = packageManager.getApplicationInfo(btDevice.player, PackageManager.GET_META_DATA);
+                    btDevice.playerIcon = packageManager.getApplicationIcon(info);
+                } catch (Exception ignored) {
+                    // Exception thrown if the player app no longer exists, so unwatch the device
+                    btDevice.player = null;
+                    btDevice.playerIcon = null;
+                    sp.edit().remove(btDevice.mac).apply();
+                }
             }
 
             btDevices.add(btDevice);

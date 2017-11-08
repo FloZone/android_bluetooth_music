@@ -12,7 +12,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import java.util.ArrayList;
@@ -39,7 +38,6 @@ public final class AppEngine {
     /**
      * Convert API BluetoothDevice list to a displayable BTDevice list
      */
-    //TODO add devices that are in sharedPref but not int paired devices
     @NonNull
     public static List<BTDevice> convertBluetoothDevices(@NonNull Context context, @NonNull Set<BluetoothDevice> pairedBluetoothDevices) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
@@ -120,13 +118,22 @@ public final class AppEngine {
     public static void startPlayer(@NonNull Context context, @Nullable String packageName) {
         if (packageName == null) return;
 
-        int startMethod = AppDefines.SUPPORTED_PLAYERS.get(packageName);
+        int startMethod;
+        if(!AppDefines.SUPPORTED_PLAYERS.containsKey(packageName)) {
+            startMethod = AppDefines.START_METHOD_DEFAULT;
+        } else {
+            startMethod = AppDefines.SUPPORTED_PLAYERS.get(packageName);
+        }
         switch (startMethod) {
             case AppDefines.START_METHOD_KEYEVENT:
                 AppEngine.startPlayerKeyevent(context, packageName);
                 break;
 
             case AppDefines.START_METHOD_STARTAPP:
+                AppEngine.startPlayerWithUI(context, packageName);
+                break;
+
+            default:
                 AppEngine.startPlayerWithUI(context, packageName);
                 break;
         }

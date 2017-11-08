@@ -9,4 +9,6 @@
     <string name="select_player">Select a music player</string>
     <string name="add_player">Add a player</string>
     <string name="add">add</string>
+    <string name="other_player_package">Other player package name</string>
+    <string name="done">done</string>
 </resources>

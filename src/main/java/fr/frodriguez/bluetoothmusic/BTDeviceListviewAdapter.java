@@ -35,15 +35,16 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
     @Override
     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.listview_icon_two_text, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.listview_two_icon_two_text, parent, false);
         }
 
-        IconTwoTextViewHolder viewHolder = (IconTwoTextViewHolder) convertView.getTag();
+        TwoIconTwoTextViewHolder viewHolder = (TwoIconTwoTextViewHolder) convertView.getTag();
         if (viewHolder == null) {
-            viewHolder = new IconTwoTextViewHolder();
-            viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
+            viewHolder = new TwoIconTwoTextViewHolder();
+            viewHolder.icon1 = (ImageView) convertView.findViewById(R.id.icon1);
             viewHolder.title = (TextView) convertView.findViewById(R.id.title);
             viewHolder.subtitle = (TextView) convertView.findViewById(R.id.subtitle);
+            viewHolder.icon2 = (ImageView) convertView.findViewById(R.id.icon2);
             convertView.setTag(viewHolder);
         }
 
@@ -53,7 +54,14 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
             // Populate the row
             viewHolder.title.setText(btDevice.name);
             viewHolder.subtitle.setText(btDevice.mac);
-            viewHolder.icon.setImageResource(btDevice.icon);
+            viewHolder.icon1.setImageResource(btDevice.icon);
+
+            // Player icon
+            if (btDevice.playerIcon != null) {
+                viewHolder.icon2.setImageDrawable(btDevice.playerIcon);
+            } else {
+                viewHolder.icon2.setImageDrawable(null);
+            }
 
             // Row in green if the device is watched
             if (btDevice.player != null) {
@@ -78,6 +86,10 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
                 btDevice.player = null;
                 AppEngine.saveWatchedState(getContext(), btDevice);
                 btview.setBackgroundResource(R.color.colorBackground);
+                ImageView playerIcon = (ImageView) btview.findViewById(R.id.icon2);
+                if(playerIcon != null) {
+                    playerIcon.setImageDrawable(null);
+                }
             }
             // Watch the device
             else {
@@ -99,8 +111,13 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
                         Player player = adapter.getItem(position);
                         if (player != null) {
                             btDevice.player = player.packageName;
+                            btDevice.playerIcon = player.icon;
                             AppEngine.saveWatchedState(getContext(), btDevice);
                             btview.setBackgroundResource(R.color.colorBackgroundSelected);
+                            ImageView playerIcon = (ImageView) btview.findViewById(R.id.icon2);
+                            if(playerIcon != null) {
+                                playerIcon.setImageDrawable(player.icon);
+                            }
                             Toast.makeText(getContext(), "Watching for " + btDevice.name + " connection", Toast.LENGTH_SHORT).show();
                             dismissDialog();
                         }
@@ -128,10 +145,11 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
         }
     }
 
-    private class IconTwoTextViewHolder {
-        ImageView icon;
+    private class TwoIconTwoTextViewHolder {
+        ImageView icon1;
         TextView title;
         TextView subtitle;
+        ImageView icon2;
     }
 
 }

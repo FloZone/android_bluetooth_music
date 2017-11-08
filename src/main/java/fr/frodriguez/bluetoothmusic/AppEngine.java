@@ -25,7 +25,7 @@ import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 /**
  * By FloZone on 03/11/2017.
  */
-
+//TODO When populating, unwatch devices if the player no longer exists
 @SuppressWarnings("WeakerAccess")
 public final class AppEngine {
 
@@ -44,6 +44,7 @@ public final class AppEngine {
     @NonNull
     public static List<BTDevice> convertBluetoothDevices(@NonNull Context context, @NonNull Set<BluetoothDevice> pairedBluetoothDevices) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        PackageManager packageManager = context.getApplicationContext().getPackageManager();
 
         List<BTDevice> btDevices = new ArrayList<>();
         for (BluetoothDevice pairedDevice : pairedBluetoothDevices) {
@@ -71,6 +72,13 @@ public final class AppEngine {
 
             // Get the music player for this device if it is watched
             btDevice.player = sp.getString(btDevice.mac, null);
+
+            // Get the player icon
+            try {
+                ApplicationInfo info = packageManager.getApplicationInfo(btDevice.player, PackageManager.GET_META_DATA);
+                btDevice.playerIcon = packageManager.getApplicationIcon(info);
+            } catch (Exception ignored) {
+            }
 
             btDevices.add(btDevice);
         }

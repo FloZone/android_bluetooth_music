@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:key="pref_reset"
+        android:title="@string/pref_reset"/>
+
+    <PreferenceCategory
+        android:key="pref_category_settings"
+        android:title="@string/pref_category_settings">
+        <CheckBoxPreference
+            android:id="@+id/pref_stop_player"
+            android:key="pref_stop_player"
+            android:title="@string/pref_stop_player"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_disable_bt"
+            android:title="@string/pref_disable_bt"
+            android:defaultValue="false"/>
+        <CheckBoxPreference
+            android:key="pref_start_ui"
+            android:title="@string/pref_start_ui"
+            android:contentDescription="@string/pref_desc_start_ui"
+            android:defaultValue="false"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_category_battery"
+        android:title="@string/pref_category_battery">
+        <CheckBoxPreference
+            android:key="pref_disable_battery"
+            android:title="@string/pref_disable_battery"
+            android:defaultValue="false"/>
+        <EditTextPreference
+            android:key="pref_battery_level"
+            android:title="@string/pref_battery_level"
+            android:defaultValue="15"
+            android:inputType="number"
+            android:dependency="pref_disable_battery"/>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:key="pref_category_about"
+        android:title="@string/pref_category_about">
+        <Preference
+            android:key="pref_tuto"
+            android:title="@string/pref_tuto"/>
+        <Preference
+            android:key="pref_version"
+            android:title="@string/pref_version"/>
+        <Preference
+            android:key="pref_license"
+            android:title="@string/pref_license"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>

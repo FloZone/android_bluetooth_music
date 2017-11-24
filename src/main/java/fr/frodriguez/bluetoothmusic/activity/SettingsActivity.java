@@ -34,13 +34,10 @@ import fr.frodriguez.library.utils.AppUtils;
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
     private final static String tutorialText = "Thanks for downloading my app !<br/><br/>" +
-            "This application enables or disables ADB over TCP:<br/>" +
-            "It allows an ADB connection between your device and your computer without an USB cable.<br/><br/>" +
-            "Your device and your computer must be on the same Wifi access point.<br/>" +
-            "This app needs root privileges in order to work.<br/><br/>" +
-            "It also needs the following permissions:<br/>" +
-            "\u2022 <b>RECEIVE_BOOT_COMPLETED:</b><br/>auto-enable ADB over TCP when the device starts (only if enabled)<br/><br/>" +
-            "\u2022 <b>ACCESS_WIFI_STATE:</b><br/>auto-enable/disable ADB over TCP when the device connects or disconnects to an access point (only if enabled)<br/><br/>" +
+            "This application starts the music player when your device connects to an other bluetooth device.<br/>" +
+            "You can choose which music player starts for a specific bluetooth device<br/><br/>" +
+            "This application needs the following permissions:<br/>" +
+            "\u2022 <b>BLUETOOTH:</b><br/>to see bluetooth device connexions<br/><br/>" +
             "If you encounter some issues, please feel free to send me details on my email present on the PlayStore.<br/><br/>" +
             "♥";
 
@@ -58,8 +55,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             // Set the Port value as its summary
             if (key.equals(Preferences.KEY_BATTERY_LEVEL)) {
-                //TODO string cast
-                findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(key, Preferences.KEY_BATTERY_LEVEL_DEFAULT+""));
+                findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(key, Integer.toString(Preferences.KEY_BATTERY_LEVEL_DEFAULT)));
             }
         }
     };
@@ -73,9 +69,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
 
+        //TODO here alert dialog for reset button
+
         // Set the battery level value as summary
-        //TODO cast
-        findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(Preferences.KEY_BATTERY_LEVEL, Preferences.KEY_BATTERY_LEVEL_DEFAULT+""));
+        findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(Preferences.KEY_BATTERY_LEVEL, Integer.toString(Preferences.KEY_BATTERY_LEVEL_DEFAULT)));
 
         // Display tutorial popup
         findPreference(Preferences.KEY_TUTO).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

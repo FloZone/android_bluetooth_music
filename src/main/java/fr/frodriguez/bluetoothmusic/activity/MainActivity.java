@@ -37,11 +37,13 @@ import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 //TODO settings: stop playback/app on bt disconnection
 //TODO settings: with ui/without ui (= for all 'other packages')
 //TODO settings: btn reset to clear shared pref
-//TODO settings: display version + licences in html + how it works
 //TODO add devices that are in sharedPref but not in paired devices. really necessary ? if in shared pref, it should be in paired devices. If not, it will not auto connects
 //TODO all strings in res/strings.xml
 //TODO move Preferences.java in a xml file
 //TODO deprecated methods in SettingsActivity
+//TODO can set volume for bt playback
+//TODO refacto @nullable, notnull, etc...
+//TODO install on sdcard
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.switchButton)

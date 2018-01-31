@@ -3,6 +3,7 @@ package fr.frodriguez.bluetoothmusic.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
@@ -12,17 +13,25 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.apache.commons.io.IOUtils;
+import org.json.JSONArray;
+
+import java.io.InputStream;
+import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
-import fr.frodriguez.bluetoothmusic.License;
 import fr.frodriguez.bluetoothmusic.R;
 import fr.frodriguez.bluetoothmusic.defines.Preferences;
+import fr.frodriguez.library.Triple;
 import fr.frodriguez.library.compat.AppCompatPreferenceActivity;
 import fr.frodriguez.library.utils.AppUtils;
 
@@ -33,21 +42,8 @@ import fr.frodriguez.library.utils.AppUtils;
 @SuppressWarnings("deprecation")
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
-    private final static String tutorialText = "Thanks for downloading my app !<br/><br/>" +
-            "This application starts the music player when your device connects to an other bluetooth device.<br/>" +
-            "You can choose which music player starts for a specific bluetooth device<br/><br/>" +
-            "This application needs the following permissions:<br/>" +
-            "\u2022 <b>BLUETOOTH:</b><br/>to see bluetooth device connexions<br/><br/>" +
-            "If you encounter some issues, please feel free to send me details on my email present on the PlayStore.<br/><br/>" +
-            "♥";
-
     // Licences list
-    private final static List<License> licenses = new ArrayList<License>(){{
-        add(new License("Butter Knife","Apache License, Version 2.0","http://www.apache.org/licenses/LICENSE-2.0"));
-        add(new License("Google Material Icons","Apache License, Version 2.0","http://www.apache.org/licenses/LICENSE-2.0"));
-        add(new License("Android Material Icon Generator","Attribution-NonCommercial 3.0 License","https://creativecommons.org/licenses/by-nc/3.0/"));
-        add(new License("SwitchButton by kyleduo","Apache License, Version 2.0","http://www.apache.org/licenses/LICENSE-2.0"));
-    }};
+    private final static List<Triple> licensesList = new ArrayList<>();
 
 
     // Listener when a preference is modified
@@ -75,16 +71,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(Preferences.KEY_BATTERY_LEVEL, Integer.toString(Preferences.KEY_BATTERY_LEVEL_DEFAULT)));
 
         // Display tutorial popup
+        View dialogview = getLayoutInflater().inflate(R.layout.dialog_tuto, null);
+        WebView webView = (WebView) dialogview.findViewById(R.id.tv_tuto);
+        webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webView.setScrollbarFadingEnabled(false);
+        webView.loadUrl("file:///android_asset/about.html");
+        final AlertDialog alertDialog = new AlertDialog.Builder(SettingsActivity.this).create();
+        alertDialog.setView(dialogview);
         findPreference(Preferences.KEY_TUTO).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
-                LayoutInflater inflater = getLayoutInflater();
-                View dialogview = inflater.inflate(R.layout.dialog_tuto, null);
-                TextView textview = (TextView) dialogview.findViewById(R.id.tv_tuto);
-                textview.setText(Html.fromHtml(tutorialText));
-
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(SettingsActivity.this);
-                alertDialog.setView(dialogview);
                 alertDialog.show();
                 return true;
             }
@@ -93,20 +89,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         // Set the version name as summary
         findPreference(Preferences.KEY_VERSION).setSummary(AppUtils.getAppVersion(this));
 
-        // Display licences
+        // Read licences.json file
+        InputStream inputStream = getResources().openRawResource(R.raw.licenses);
+        StringWriter writer = new StringWriter();
+        try {
+            IOUtils.copy(inputStream, writer, Charset.defaultCharset());
+            JSONArray licensesJson = new JSONArray(writer.toString());
+            writer.close();
+            for(int i = 0; i < licensesJson.length(); ++i) {
+                licensesList.add(new Triple<>(
+                        licensesJson.getJSONObject(i).getString(Preferences.LICENSES_NAME),
+                        licensesJson.getJSONObject(i).getString(Preferences.LICENSES_TITLE),
+                        licensesJson.getJSONObject(i).getString(Preferences.LICENSES_URL)
+                ));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        // Display licenses
         findPreference(Preferences.KEY_LICENSE).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference preference) {
                 // Adapter for the listview
-                ArrayAdapter<License> adapter = new ArrayAdapter<License>(SettingsActivity.this, android.R.layout.simple_list_item_2, android.R.id.text1, licenses) {
+                ArrayAdapter<Triple> adapter = new ArrayAdapter<Triple>(SettingsActivity.this, android.R.layout.simple_list_item_2, android.R.id.text1, licensesList) {
                     @NonNull
                     @Override
                     public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                         View view = super.getView(position, convertView, parent);
                         TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                        text1.setText(licenses.get(position).title);
-                        text2.setText(licenses.get(position).license);
+                        text1.setText((String) licensesList.get(position).first);
+                        text2.setText((String) licensesList.get(position).second);
                         return view;
                     }
                 };
@@ -119,7 +132,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 listview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        String url = licenses.get(position).url;
+                        String url = (String) licensesList.get(position).third;
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                         startActivity(intent);
                     }
@@ -159,4 +172,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(listener);
     }
+
+
 }

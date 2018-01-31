@@ -27,4 +27,7 @@ public final class Preferences {
     public static final String KEY_VERSION = "pref_version";
     public static final String KEY_LICENSE = "pref_license";
 
+    public static final String LICENSES_NAME = "name";
+    public static final String LICENSES_TITLE = "title";
+    public static final String LICENSES_URL = "url";
 }

@@ -16,7 +16,6 @@ android {
         }
     }
 }
-
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:appcompat-v7:25.4.0'
@@ -24,8 +23,14 @@ dependencies {
 
     compile project(':libraries')
 
+    // Apache utils
+    compile "commons-io:commons-io:2.6"
+
+    // Butterknife
     compile 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
 
+    // Custom switch button
     compile 'com.kyleduo.switchbutton:library:1.4.6'
 }
+

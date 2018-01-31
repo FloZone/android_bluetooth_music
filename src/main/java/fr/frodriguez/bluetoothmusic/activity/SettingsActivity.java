@@ -1,14 +1,14 @@
 package fr.frodriguez.bluetoothmusic.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -62,10 +62,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         addPreferencesFromResource(R.xml.preferences);
 
         // Register the listener
-        SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
+        final SharedPreferences sharedPreferences = getPreferenceScreen().getSharedPreferences();
         sharedPreferences.registerOnSharedPreferenceChangeListener(listener);
 
-        //TODO here alert dialog for reset button
+        // Reset button: popup to ask confirmation
+        final AlertDialog dialogReset = new AlertDialog.Builder(SettingsActivity.this)
+                .setMessage(R.string.pref_reset_confirmation)
+                .setNegativeButton(android.R.string.no, null)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        SharedPreferences.Editor spe = sharedPreferences.edit();
+                        spe.clear();
+                        spe.apply();
+                    }
+                })
+                .create();
+        findPreference(Preferences.KEY_RESET).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                dialogReset.show();
+                return true;
+            }
+        });
 
         // Set the battery level value as summary
         findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(Preferences.KEY_BATTERY_LEVEL, Integer.toString(Preferences.KEY_BATTERY_LEVEL_DEFAULT)));
@@ -172,6 +191,5 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         getPreferenceScreen().getSharedPreferences()
                 .unregisterOnSharedPreferenceChangeListener(listener);
     }
-
 
 }

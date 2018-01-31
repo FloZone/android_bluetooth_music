@@ -19,6 +19,16 @@
         android:paddingLeft="16dp"
         android:paddingRight="16dp">
 
+        <ImageButton
+            android:id="@+id/btnOtherPlayer"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_done_black_36dp"
+            android:contentDescription="@string/done"
+            android:background="@color/colorBackground" />
+
         <!--TODO vérifier le inputType le plus adequat-->
         <EditText
             android:id="@+id/etOtherPlayer"
@@ -32,16 +42,6 @@
             android:inputType="textUri"
             android:lines="1"
             android:hint="@string/other_player_package" />
-
-        <ImageButton
-            android:id="@+id/btnOtherPlayer"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_centerVertical="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/ic_done_black_36dp"
-            android:contentDescription="@string/done"
-            android:background="@color/colorBackground" />
 
     </RelativeLayout>
 

@@ -6,6 +6,9 @@ package fr.frodriguez.bluetoothmusic.defines;
 
 public final class Preferences {
 
+    public final static String KEY_ENABLED = "sp_enabled";
+    public final static boolean ENABLED_DEFAULT = false;
+
     public static final String KEY_RESET = "pref_reset";
 
     public static final String KEY_STOP_PLAYER = "pref_stop_player";

@@ -4,17 +4,14 @@ import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
-import android.os.BatteryManager;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.KeyEvent;
 
 import java.util.ArrayList;
@@ -38,13 +35,13 @@ public final class AppEngine {
     public static boolean isAppEnabled(@NonNull Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
 
-        // If the main swith is disabled, return false
-        if(!sp.getBoolean(AppDefines.SHARED_PREF_KEY_ENABLED, AppDefines.SHARED_PREF_DEFAULT_ENABLED)) {
+        // If the main switch is disabled, return false
+        if(!sp.getBoolean(Preferences.KEY_ENABLED, Preferences.ENABLED_DEFAULT)) {
             return false;
         }
 
         // If the battery level is watched, check it
-        if(sp.getBoolean(Preferences.KEY_WATCH_BATTERY, Preferences.KEY_WATCH_BATTERY_DEFAULT)) {
+        else if(sp.getBoolean(Preferences.KEY_WATCH_BATTERY, Preferences.KEY_WATCH_BATTERY_DEFAULT)) {
             int watchedBatteryLevel = Integer.valueOf(sp.getString(Preferences.KEY_BATTERY_LEVEL, Preferences.KEY_BATTERY_LEVEL_DEFAULT));
             int deviceBatteryLevel = AppUtils.getBatteryLevel(context);
             if(deviceBatteryLevel <= watchedBatteryLevel) return false;
@@ -136,10 +133,17 @@ public final class AppEngine {
     public static void startPlayer(@NonNull Context context, @Nullable String packageName) {
         if (packageName == null) return;
 
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         int startMethod;
-        if(!AppDefines.SUPPORTED_PLAYERS.containsKey(packageName)) {
-            startMethod = AppDefines.START_METHOD_DEFAULT;
-        } else {
+        // If the player is not supported,
+        // or if "start with UI" option if enabled,
+        // start the player with UI (captain obvious)
+        if(!AppDefines.SUPPORTED_PLAYERS.containsKey(packageName)
+            || sp.getBoolean(Preferences.KEY_START_UI, Preferences.KEY_START_UI_DEFAULT)) {
+            startMethod = AppDefines.START_METHOD_WITHUI;
+        }
+        // Else, set the known start method for this player
+        else {
             startMethod = AppDefines.SUPPORTED_PLAYERS.get(packageName);
         }
         switch (startMethod) {
@@ -147,11 +151,7 @@ public final class AppEngine {
                 AppEngine.startPlayerKeyevent(context, packageName);
                 break;
 
-            case AppDefines.START_METHOD_STARTAPP:
-                AppEngine.startPlayerWithUI(context, packageName);
-                break;
-
-            default:
+            case AppDefines.START_METHOD_WITHUI:
                 AppEngine.startPlayerWithUI(context, packageName);
                 break;
         }

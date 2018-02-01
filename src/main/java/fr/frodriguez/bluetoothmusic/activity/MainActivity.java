@@ -32,6 +32,7 @@ import fr.frodriguez.bluetoothmusic.BTDevice;
 import fr.frodriguez.bluetoothmusic.BTDeviceListviewAdapter;
 import fr.frodriguez.bluetoothmusic.R;
 import fr.frodriguez.bluetoothmusic.defines.AppDefines;
+import fr.frodriguez.bluetoothmusic.defines.Preferences;
 
 
 /**
@@ -49,6 +50,7 @@ import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 //TODO refacto @nullable, notnull, etc...
 //TODO install on sdcard
 //TODO associate a list of app to a bt device
+//TODO check if app is enabled/disabled before starting the player
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.switchButton)
@@ -158,14 +160,14 @@ public class MainActivity extends AppCompatActivity {
     public void onSwitchClick() {
         SharedPreferences.Editor spe = PreferenceManager.getDefaultSharedPreferences(this).edit();
         // Enable or disable the "watcher"
-        spe.putBoolean(AppDefines.SHARED_PREF_KEY_ENABLED, switchButton.isChecked());
+        spe.putBoolean(Preferences.KEY_ENABLED, switchButton.isChecked());
         spe.apply();
     }
 
 
     @OnClick(R.id.test)
     public void test() {
-        Log.d("FLZ", "enabled ? " + AppEngine.isAppEnabled(this));
+        AppEngine.startPlayer(this, "com.google.android.music");
     }
 
 }

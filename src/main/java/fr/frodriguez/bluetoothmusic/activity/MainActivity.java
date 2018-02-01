@@ -3,14 +3,17 @@ package fr.frodriguez.bluetoothmusic.activity;
 import android.Manifest;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.os.BatteryManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -37,7 +40,7 @@ import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 
 //TODO settings: stop playback/app on bt disconnection
 //TODO settings: with ui/without ui (= for all 'other packages')
-//TODO add devices that are in sharedPref but not in paired devices. really necessary ? if in shared pref, it should be in paired devices. If not, it will not auto connects
+//TODO all settings
 //TODO all strings in res/strings.xml
 //TODO settings: disable on low battery
 //TODO move Preferences.java in a xml file
@@ -68,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         bluetoothPermissionDenied = false;
 
         // Init switch button
-        switchButton.setChecked(AppEngine.isWatcherEnabled(this));
+        switchButton.setChecked(AppEngine.isAppEnabled(this));
         // Initialize the list of available players
         AppEngine.initPlayerList(this);
     }
@@ -157,6 +160,12 @@ public class MainActivity extends AppCompatActivity {
         // Enable or disable the "watcher"
         spe.putBoolean(AppDefines.SHARED_PREF_KEY_ENABLED, switchButton.isChecked());
         spe.apply();
+    }
+
+
+    @OnClick(R.id.test)
+    public void test() {
+        Log.d("FLZ", "enabled ? " + AppEngine.isAppEnabled(this));
     }
 
 }

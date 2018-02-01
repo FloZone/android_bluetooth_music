@@ -8,7 +8,6 @@ import android.os.Bundle;
 import android.preference.Preference;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,9 +48,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     // Listener when a preference is modified
     SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-            // Set the Port value as its summary
+            // Check the battery percentage value and set it as summary
             if (key.equals(Preferences.KEY_BATTERY_LEVEL)) {
-                findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(key, Integer.toString(Preferences.KEY_BATTERY_LEVEL_DEFAULT)));
+                SharedPreferences.Editor spe = sharedPreferences.edit();
+                int batteryLevel;
+                try {
+                    batteryLevel = Integer.valueOf(sharedPreferences.getString(key, Preferences.KEY_BATTERY_LEVEL_DEFAULT));
+                    if(batteryLevel < 0) batteryLevel = 0;
+                    if(batteryLevel > 100) batteryLevel = 100;
+                    spe.putString(Preferences.KEY_BATTERY_LEVEL, Integer.toString(batteryLevel));
+                    spe.apply();
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    batteryLevel = Integer.valueOf(Preferences.KEY_BATTERY_LEVEL_DEFAULT);
+                    spe.putString(Preferences.KEY_BATTERY_LEVEL, Integer.toString(batteryLevel));
+                    spe.apply();
+                }
+                findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(Integer.toString(batteryLevel));
             }
         }
     };
@@ -87,7 +100,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         });
 
         // Set the battery level value as summary
-        findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(Preferences.KEY_BATTERY_LEVEL, Integer.toString(Preferences.KEY_BATTERY_LEVEL_DEFAULT)));
+        findPreference(Preferences.KEY_BATTERY_LEVEL).setSummary(sharedPreferences.getString(Preferences.KEY_BATTERY_LEVEL, Preferences.KEY_BATTERY_LEVEL_DEFAULT));
 
         // Display tutorial popup
         View dialogview = getLayoutInflater().inflate(R.layout.dialog_tuto, null);

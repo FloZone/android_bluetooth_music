@@ -4,14 +4,17 @@ import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.os.BatteryManager;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import java.util.ArrayList;
@@ -20,6 +23,8 @@ import java.util.Map;
 import java.util.Set;
 
 import fr.frodriguez.bluetoothmusic.defines.AppDefines;
+import fr.frodriguez.bluetoothmusic.defines.Preferences;
+import fr.frodriguez.library.utils.AppUtils;
 
 /**
  * By FloZone on 03/11/2017.
@@ -30,9 +35,22 @@ public final class AppEngine {
     /**
      * Return whether the app watch for bluetooth device connection or not
      */
-    public static boolean isWatcherEnabled(@NonNull Context context) {
+    public static boolean isAppEnabled(@NonNull Context context) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
-        return sp.getBoolean(AppDefines.SHARED_PREF_KEY_ENABLED, AppDefines.SHARED_PREF_DEFAULT_ENABLED );
+
+        // If the main swith is disabled, return false
+        if(!sp.getBoolean(AppDefines.SHARED_PREF_KEY_ENABLED, AppDefines.SHARED_PREF_DEFAULT_ENABLED)) {
+            return false;
+        }
+
+        // If the battery level is watched, check it
+        if(sp.getBoolean(Preferences.KEY_WATCH_BATTERY, Preferences.KEY_WATCH_BATTERY_DEFAULT)) {
+            int watchedBatteryLevel = Integer.valueOf(sp.getString(Preferences.KEY_BATTERY_LEVEL, Preferences.KEY_BATTERY_LEVEL_DEFAULT));
+            int deviceBatteryLevel = AppUtils.getBatteryLevel(context);
+            if(deviceBatteryLevel <= watchedBatteryLevel) return false;
+        }
+
+        return true;
     }
 
     /**

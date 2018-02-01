@@ -22,7 +22,7 @@ public class MainReceiver extends BroadcastReceiver {
         if (action == null) return;
 
         // If the app is not "enabled"
-        if(!AppEngine.isWatcherEnabled(context)) return;
+        if(!AppEngine.isAppEnabled(context)) return;
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         // When a bluetooth device connects

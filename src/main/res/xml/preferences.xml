@@ -29,15 +29,17 @@
         android:key="pref_category_battery"
         android:title="@string/pref_category_battery">
         <CheckBoxPreference
-            android:key="pref_disable_battery"
-            android:title="@string/pref_disable_battery"
+            android:key="pref_watch_battery"
+            android:title="@string/pref_watch_battery"
             android:defaultValue="false"/>
         <EditTextPreference
             android:key="pref_battery_level"
             android:title="@string/pref_battery_level"
             android:defaultValue="15"
             android:inputType="number"
-            android:dependency="pref_disable_battery"/>
+            android:numeric="integer"
+            android:maxLength="3"
+            android:dependency="pref_watch_battery"/>
     </PreferenceCategory>
 
     <PreferenceCategory

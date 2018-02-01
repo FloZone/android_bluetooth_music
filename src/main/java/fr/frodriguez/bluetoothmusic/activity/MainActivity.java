@@ -40,10 +40,8 @@ import fr.frodriguez.bluetoothmusic.defines.Preferences;
  */
 
 //TODO settings: stop playback/app on bt disconnection
-//TODO settings: with ui/without ui (= for all 'other packages')
 //TODO all settings
 //TODO all strings in res/strings.xml
-//TODO settings: disable on low battery
 //TODO move Preferences.java in a xml file
 //TODO deprecated methods in SettingsActivity
 //TODO can set volume for bt playback
@@ -167,7 +165,10 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.test)
     public void test() {
-        AppEngine.startPlayer(this, "com.google.android.music");
+        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
+        if (mBluetoothAdapter.isEnabled()) {
+            mBluetoothAdapter.disable();
+        }
     }
 
 }

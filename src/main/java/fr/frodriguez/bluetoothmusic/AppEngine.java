@@ -1,5 +1,7 @@
 package fr.frodriguez.bluetoothmusic;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothClass;
 import android.bluetooth.BluetoothDevice;
 import android.content.Context;
@@ -12,6 +14,7 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.KeyEvent;
 
 import java.util.ArrayList;
@@ -206,6 +209,34 @@ public final class AppEngine {
         // If btDevice.player == null, equivalent to spe.remove(key)
         spe.putString(btDevice.mac, btDevice.player);
         spe.apply();
+    }
+
+    /**
+     * Create the PendingIntent used for the "disable bluetooth" alarm
+     */
+    public static PendingIntent createDisableBluetoothIntent(@NonNull Context context) {
+        Intent stopBluetoothIntent = new Intent(AppDefines.INTENT_DISABLE_BLUETOOTH);
+        return PendingIntent.getBroadcast(context, 0, stopBluetoothIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    /**
+     * Schedule an alarm triggered in Xsec which will disable the bluetooth
+     */
+    public static void scheduleDisableBluetoothAlarm(@NonNull Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if(alarmManager != null) {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() + (30 * 1000), createDisableBluetoothIntent(context));
+        }
+    }
+
+    /**
+     * Cancel the alarm scheduled just above
+     */
+    public static void cancelDisableBluetoothAlarm(@NonNull Context context) {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        if(alarmManager != null) {
+            alarmManager.cancel(createDisableBluetoothIntent(context));
+        }
     }
 
 }

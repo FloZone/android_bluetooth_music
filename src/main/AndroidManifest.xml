@@ -6,6 +6,7 @@
     android:versionName="0.3">
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
     <application
         android:allowBackup="true"
@@ -41,6 +42,7 @@
             <intent-filter>
                 <action android:name="android.bluetooth.device.action.ACL_CONNECTED" />
                 <action android:name="android.bluetooth.device.action.ACL_DISCONNECTED" />
+                <action android:name="frodriguez.bluetoothmusic.intent.disable_bluetooth" />
             </intent-filter>
         </receiver>
 

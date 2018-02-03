@@ -2,6 +2,7 @@
 <manifest
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.frodriguez.bluetoothmusic"
+    android:installLocation="auto"
     android:versionCode="000003"
     android:versionName="0.3">
 

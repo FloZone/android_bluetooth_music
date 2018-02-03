@@ -46,7 +46,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
 
     // Listener when a preference is modified
-    SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+    private SharedPreferences.OnSharedPreferenceChangeListener listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
         public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
             // Check the battery percentage value and set it as summary
             if (key.equals(Preferences.KEY_BATTERY_LEVEL)) {

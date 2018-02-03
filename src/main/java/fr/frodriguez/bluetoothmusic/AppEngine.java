@@ -229,6 +229,7 @@ public final class AppEngine {
     /**
      * Create the PendingIntent used for the "disable bluetooth" alarm
      */
+    @NonNull
     public static PendingIntent createDisableBluetoothIntent(@NonNull Context context) {
         Intent stopBluetoothIntent = new Intent(AppDefines.INTENT_DISABLE_BLUETOOTH);
         return PendingIntent.getBroadcast(context, 0, stopBluetoothIntent, PendingIntent.FLAG_UPDATE_CURRENT);

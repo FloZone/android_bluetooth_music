@@ -42,16 +42,10 @@ import fr.frodriguez.bluetoothmusic.defines.Preferences;
  * By FloZone on 06/10/2017.
  */
 
-//TODO settings: stop playback/app on bt disconnection
-//TODO all settings
 //TODO all strings in res/strings.xml
-//TODO move Preferences.java in a xml file
-//TODO deprecated methods in SettingsActivity
+//TODO deprecated methods in SettingsActivity -> use SettingsFragment
 //TODO can set volume for bt playback
-//TODO refacto @nullable, notnull, etc...
-//TODO install on sdcard
 //TODO associate a list of app to a bt device
-//TODO check if app is enabled/disabled before starting the player
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.switchButton)

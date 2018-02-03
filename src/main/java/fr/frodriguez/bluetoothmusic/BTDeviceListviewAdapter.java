@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,7 +35,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
     private AlertDialog dialog;
 
 
-    public BTDeviceListviewAdapter(Context context, List<BTDevice> btDevices) {
+    public BTDeviceListviewAdapter(@NonNull Context context, @NonNull List<BTDevice> btDevices) {
         super(context, 0, btDevices);
     }
 
@@ -165,7 +166,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
      * @param icon          the icon of the music player
      * @param btview        the listview row of the bluetooth device
      */
-    public void watchDevice(BTDevice btDevice, String packageName, Drawable icon, View btview) {
+    public void watchDevice(@NonNull BTDevice btDevice, @NonNull String packageName, @Nullable Drawable icon, @NonNull View btview) {
         btDevice.player = packageName;
         btDevice.playerIcon = icon;
         AppEngine.saveWatchedState(getContext(), btDevice);

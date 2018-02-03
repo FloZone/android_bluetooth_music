@@ -1,6 +1,8 @@
 package fr.frodriguez.bluetoothmusic.activity;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -14,6 +16,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -165,10 +168,11 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.test)
     public void test() {
-        BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
-        if (mBluetoothAdapter.isEnabled()) {
-            mBluetoothAdapter.disable();
-        }
+        AppEngine.startPlayerKeyevent(this, "com.sec.android.app.music");
+    }
+    @OnClick(R.id.test2)
+    public void test2() {
+
     }
 
 }

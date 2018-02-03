@@ -57,6 +57,12 @@ public class MainReceiver extends BroadcastReceiver {
             if (sp.contains(device.getAddress())) {
                 Toast.makeText(context, device.getName() + " is now disconnected :(", Toast.LENGTH_LONG).show();
 
+                // If "stop playback' option is enabled
+                if(sp.getBoolean(Preferences.KEY_STOP_PLAYBACK, Preferences.KEY_STOP_PLAYBACK_DEFAULT)) {
+                    String packageName = sp.getString(device.getAddress(), null);
+                    if(packageName != null) AppEngine.stopPlayerKeyevent(context, packageName);
+                }
+
                 // If "disable bluetooth" option is enabled
                 if(sp.getBoolean(Preferences.KEY_DISABLE_BT, Preferences.KEY_DISABLE_BT_DEFAULT)) {
                     // Trigger an alarm in Xsec which will disable bluetooth
@@ -65,7 +71,7 @@ public class MainReceiver extends BroadcastReceiver {
             }
         }
 
-        // Disable bluetooth
+        // Disable bluetooth intent
         else if (intent.getAction().equals(AppDefines.INTENT_DISABLE_BLUETOOTH)) {
             AppUtils.switchBluetooth(false);
         }

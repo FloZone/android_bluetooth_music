@@ -161,7 +161,7 @@ public final class AppEngine {
     }
 
     /**
-     * Starts the given music player playback by sending a PLAY key event
+     * Start the given music player playback by sending a PLAY key event
      */
     public static void startPlayerKeyevent(@NonNull Context context, @NonNull String packageName) {
         Intent playIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
@@ -172,6 +172,21 @@ public final class AppEngine {
         context.sendOrderedBroadcast(playIntent, null);
         // Key up
         playIntent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PLAY));
+        context.sendOrderedBroadcast(playIntent, null);
+    }
+
+    /**
+     * Stop the given music player playback by sending a STOP key event
+     */
+    public static void stopPlayerKeyevent(@NonNull Context context, @NonNull String packageName) {
+        Intent playIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        playIntent.addFlags(Intent.FLAG_INCLUDE_STOPPED_PACKAGES);
+        playIntent.setPackage(packageName);
+        // Key down
+        playIntent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_STOP));
+        context.sendOrderedBroadcast(playIntent, null);
+        // Key up
+        playIntent.putExtra(Intent.EXTRA_KEY_EVENT, new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_STOP));
         context.sendOrderedBroadcast(playIntent, null);
     }
 

@@ -14,7 +14,7 @@
     <string name="settings">Settings</string>
     <string name="pref_reset">Reset data</string>
     <string name="pref_category_settings">Settings</string>
-    <string name="pref_stop_player">Stop player on device disconnection</string>
+    <string name="pref_stop_playback">Force stop playback on device disconnection</string>
     <string name="pref_disable_bt">Disable bluetooth on device disconnection</string>
     <string name="pref_category_battery">Battery</string>
     <string name="pref_watch_battery">Disable app on low battery</string>

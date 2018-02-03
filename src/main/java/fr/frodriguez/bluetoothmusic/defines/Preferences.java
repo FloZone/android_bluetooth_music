@@ -11,8 +11,8 @@ public final class Preferences {
 
     public static final String KEY_RESET = "pref_reset";
 
-    public static final String KEY_STOP_PLAYER = "pref_stop_player";
-    public static final boolean KEY_STOP_PLAYE_DEFAULT = false;
+    public static final String KEY_STOP_PLAYBACK = "pref_stop_playback";
+    public static final boolean KEY_STOP_PLAYBACK_DEFAULT = false;
 
     public static final String KEY_DISABLE_BT = "pref_disable_bt";
     public static final boolean KEY_DISABLE_BT_DEFAULT = true;

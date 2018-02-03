@@ -10,9 +10,9 @@
         android:key="pref_category_settings"
         android:title="@string/pref_category_settings">
         <CheckBoxPreference
-            android:id="@+id/pref_stop_player"
-            android:key="pref_stop_player"
-            android:title="@string/pref_stop_player"
+            android:id="@+id/pref_stop_playback"
+            android:key="pref_stop_playback"
+            android:title="@string/pref_stop_playback"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_disable_bt"

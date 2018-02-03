@@ -13,7 +13,6 @@
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:gravity="center">
-
         <com.kyleduo.switchbutton.SwitchButton
             android:id="@+id/switchButton"
             android:layout_width="wrap_content"
@@ -23,17 +22,6 @@
             app:kswThumbHeight="30dp"
             app:kswBackMeasureRatio="2"
             app:kswThumbMargin="3dp" />
-
-        <Button
-            android:id="@+id/test"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test"/>
-        <Button
-            android:id="@+id/test2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="test2"/>
     </LinearLayout>
 
     <ListView

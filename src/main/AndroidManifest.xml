@@ -3,8 +3,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="fr.frodriguez.bluetoothmusic"
     android:installLocation="auto"
-    android:versionCode="000003"
-    android:versionName="0.3">
+    android:versionCode="04"
+    android:versionName="0.4">
 
     <uses-permission android:name="android.permission.BLUETOOTH"/>
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />

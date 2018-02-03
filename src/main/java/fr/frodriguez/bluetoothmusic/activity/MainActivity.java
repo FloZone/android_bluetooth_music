@@ -1,22 +1,16 @@
 package fr.frodriguez.bluetoothmusic.activity;
 
 import android.Manifest;
-import android.app.Activity;
-import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.os.BatteryManager;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
@@ -43,7 +37,6 @@ import fr.frodriguez.bluetoothmusic.defines.Preferences;
  */
 
 //TODO all strings in res/strings.xml
-//TODO deprecated methods in SettingsActivity -> use SettingsFragment
 //TODO can set volume for bt playback
 //TODO associate a list of app to a bt device
 public class MainActivity extends AppCompatActivity {

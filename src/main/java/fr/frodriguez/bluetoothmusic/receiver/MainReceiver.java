@@ -1,14 +1,11 @@
 package fr.frodriguez.bluetoothmusic.receiver;
 
-import android.app.AlarmManager;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.widget.Toast;
 
 import fr.frodriguez.bluetoothmusic.AppEngine;

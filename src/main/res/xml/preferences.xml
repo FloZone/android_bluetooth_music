@@ -1,38 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen
+<android.support.v7.preference.PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <Preference
+    <android.support.v7.preference.Preference
         android:key="pref_reset"
         android:title="@string/pref_reset"/>
 
-    <PreferenceCategory
+    <android.support.v7.preference.PreferenceCategory
         android:key="pref_category_settings"
         android:title="@string/pref_category_settings">
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
+            android:id="@+id/pref_volume_enable"
+            android:key="pref_volume_enable"
+            android:title="@string/pref_volume_enable"
+            android:defaultValue="false" />
+        <android.support.v7.preference.SeekBarPreference
+            android:id="@+id/pref_volume"
+            android:key="pref_volume"
+            android:title="@string/pref_volume"
+            android:max="100"
+            android:defaultValue="100"
+            android:dependency="pref_volume_enable"/>
+        <android.support.v7.preference.CheckBoxPreference
             android:id="@+id/pref_stop_playback"
             android:key="pref_stop_playback"
             android:title="@string/pref_stop_playback"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
             android:key="pref_disable_bt"
             android:title="@string/pref_disable_bt"
             android:defaultValue="false"/>
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
             android:key="pref_start_ui"
             android:title="@string/pref_start_ui"
             android:contentDescription="@string/pref_desc_start_ui"
             android:defaultValue="false"/>
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory
+    <android.support.v7.preference.PreferenceCategory
         android:key="pref_category_battery"
         android:title="@string/pref_category_battery">
-        <CheckBoxPreference
+        <android.support.v7.preference.CheckBoxPreference
             android:key="pref_watch_battery"
             android:title="@string/pref_watch_battery"
             android:defaultValue="false"/>
-        <EditTextPreference
+        <android.support.v7.preference.EditTextPreference
             android:key="pref_battery_level"
             android:title="@string/pref_battery_level"
             android:defaultValue="15"
@@ -40,20 +52,20 @@
             android:numeric="integer"
             android:maxLength="3"
             android:dependency="pref_watch_battery"/>
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-    <PreferenceCategory
+    <android.support.v7.preference.PreferenceCategory
         android:key="pref_category_about"
         android:title="@string/pref_category_about">
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="pref_tuto"
             android:title="@string/pref_tuto"/>
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="pref_version"
             android:title="@string/pref_version"/>
-        <Preference
+        <android.support.v7.preference.Preference
             android:key="pref_license"
             android:title="@string/pref_license"/>
-    </PreferenceCategory>
+    </android.support.v7.preference.PreferenceCategory>
 
-</PreferenceScreen>
+</android.support.v7.preference.PreferenceScreen>

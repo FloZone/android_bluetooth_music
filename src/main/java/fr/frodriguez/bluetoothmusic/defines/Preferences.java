@@ -11,6 +11,12 @@ public final class Preferences {
 
     public static final String KEY_RESET = "pref_reset";
 
+    public static final String KEY_VOLUME_ENABLE = "pref_volume_enable";
+    public static final boolean KEY_VOLUME_ENABLE_DEFAULT = false;
+
+    public static final String KEY_VOLUME = "pref_volume";
+    public static final int KEY_VOLUME_DEFAULT = 100;
+
     public static final String KEY_STOP_PLAYBACK = "pref_stop_playback";
     public static final boolean KEY_STOP_PLAYBACK_DEFAULT = false;
 

@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.Drawable;
+import android.media.AudioManager;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
@@ -137,6 +138,16 @@ public final class AppEngine {
         if (packageName == null) return;
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        // Set the audio volume if the option is enabled
+        if(sp.getBoolean(Preferences.KEY_VOLUME_ENABLE, Preferences.KEY_VOLUME_ENABLE_DEFAULT)) {
+            int volumePct = sp.getInt(Preferences.KEY_VOLUME, Preferences.KEY_VOLUME_DEFAULT);
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+            if(audioManager != null) {
+                int volumeMax = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, volumePct*volumeMax/100, 0);
+            }
+        }
+
         int startMethod;
         // If the player is not supported,
         // or if "start with UI" option if enabled,

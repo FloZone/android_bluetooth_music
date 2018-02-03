@@ -28,4 +28,10 @@
     <string name="pref_version">Version</string>
     <string name="pref_license">Licences</string>
     <string name="pref_reset_confirmation">Do you really want to reset data ?</string>
+    <string name="toast_grant_bluetooth_permission">You must grant bluetooth permission</string>
+    <string name="toast_grant_bluetooth_admin_permission">You must grant bluetooth admin permission</string>
+    <string name="toast_enable_bluetooth">Please enable bluetooth</string>
+    <string name="toast_error_paired_devices">Error getting paired bluetooth devices</string>
+    <string name="toast_is_connected"> is now connected :)</string>
+    <string name="toast_is_disconnected"> is now disconnected :(</string>
 </resources>

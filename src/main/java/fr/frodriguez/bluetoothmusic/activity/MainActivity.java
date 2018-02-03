@@ -36,8 +36,6 @@ import fr.frodriguez.bluetoothmusic.defines.Preferences;
  * By FloZone on 06/10/2017.
  */
 
-//TODO all strings in res/strings.xml
-//TODO can set volume for bt playback
 //TODO associate a list of app to a bt device
 public class MainActivity extends AppCompatActivity {
 
@@ -45,9 +43,6 @@ public class MainActivity extends AppCompatActivity {
     SwitchButton switchButton;
     @BindView(R.id.listView)
     ListView listView;
-
-    private boolean bluetoothPermissionDenied;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,8 +52,6 @@ public class MainActivity extends AppCompatActivity {
         if(getSupportActionBar() != null) getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
-
-        bluetoothPermissionDenied = false;
 
         // Init switch button
         switchButton.setChecked(AppEngine.isAppEnabled(this));
@@ -70,32 +63,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        // If the user denied bluetooth permission, check here to prevent an onResume() loop
-        if(bluetoothPermissionDenied) {
-            return;
-        }
-        // If the bluetooth permission is not already granted, ask to the user
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.BLUETOOTH}, AppDefines.PERMISSION_REQUEST_BLUETOOTH);
-        }
-        else {
-            populateListview();
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case AppDefines.PERMISSION_REQUEST_BLUETOOTH: {
-                // If the user granted bluetooth permission
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    populateListview();
-                } else {
-                    Toast.makeText(this, "You must grant bluetooth permission", Toast.LENGTH_SHORT).show();
-                    bluetoothPermissionDenied = true;
-                }
-            }
-        }
+        populateListview();
     }
 
     // Add a menu button to the action bar
@@ -123,12 +91,12 @@ public class MainActivity extends AppCompatActivity {
         BluetoothAdapter bluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
         // If disabled, can't see paired BTDevices
         if (bluetoothAdapter == null || !bluetoothAdapter.isEnabled()) {
-            Toast.makeText(this, "Please enable bluetooth", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.toast_enable_bluetooth, Toast.LENGTH_LONG).show();
             return;
         }
         Set<android.bluetooth.BluetoothDevice> pairedDevices = bluetoothAdapter.getBondedDevices();
         if (pairedDevices == null) {
-            Toast.makeText(this, "Error getting paired bluetooth devices", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.toast_error_paired_devices, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -150,16 +118,6 @@ public class MainActivity extends AppCompatActivity {
         // Enable or disable the "watcher"
         spe.putBoolean(Preferences.KEY_ENABLED, switchButton.isChecked());
         spe.apply();
-    }
-
-
-    @OnClick(R.id.test)
-    public void test() {
-        AppEngine.startPlayerKeyevent(this, "com.sec.android.app.music");
-    }
-    @OnClick(R.id.test2)
-    public void test2() {
-
     }
 
 }

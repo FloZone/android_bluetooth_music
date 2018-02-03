@@ -29,7 +29,6 @@
             android:contentDescription="@string/done"
             android:background="@color/colorBackground" />
 
-        <!--TODO vérifier le inputType le plus adequat-->
         <EditText
             android:id="@+id/etOtherPlayer"
             android:layout_width="wrap_content"

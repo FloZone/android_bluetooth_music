@@ -8,8 +8,6 @@ import java.util.HashMap;
 
 public final class AppDefines {
 
-    public final static int PERMISSION_REQUEST_BLUETOOTH = 1;
-
     public final static int START_METHOD_KEYEVENT = 0;
     public final static int START_METHOD_WITHUI = 1;
 

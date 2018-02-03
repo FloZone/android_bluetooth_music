@@ -9,6 +9,7 @@ import android.preference.PreferenceManager;
 import android.widget.Toast;
 
 import fr.frodriguez.bluetoothmusic.AppEngine;
+import fr.frodriguez.bluetoothmusic.R;
 import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 import fr.frodriguez.bluetoothmusic.defines.Preferences;
 import fr.frodriguez.library.utils.AppUtils;
@@ -38,7 +39,7 @@ public class MainReceiver extends BroadcastReceiver {
                 // Cancel the alarm which disable the bluetooth
                 AppEngine.cancelDisableBluetoothAlarm(context);
 
-                Toast.makeText(context, device.getName() + " is now connected :)", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, device.getName() + context.getResources().getString(R.string.toast_is_connected), Toast.LENGTH_LONG).show();
 
                 // Get the music player to start and start it
                 String packageName = sp.getString(device.getAddress(), null);
@@ -52,7 +53,7 @@ public class MainReceiver extends BroadcastReceiver {
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             // If it is watched
             if (sp.contains(device.getAddress())) {
-                Toast.makeText(context, device.getName() + " is now disconnected :(", Toast.LENGTH_LONG).show();
+                Toast.makeText(context, device.getName() + context.getResources().getString(R.string.toast_is_disconnected), Toast.LENGTH_LONG).show();
 
                 // If "stop playback' option is enabled
                 if(sp.getBoolean(Preferences.KEY_STOP_PLAYBACK, Preferences.KEY_STOP_PLAYBACK_DEFAULT)) {

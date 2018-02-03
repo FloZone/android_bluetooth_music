@@ -107,7 +107,6 @@ public final class AppEngine {
         return btDevices;
     }
 
-
     /**
      * Initialize the list of available music players
      */

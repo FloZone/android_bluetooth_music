@@ -19,7 +19,7 @@ public class BTDevice {
     public BTDevice(String name, String mac) {
         this.name = name;
         this.mac = mac;
-        this.icon = R.drawable.ic_devices_other_black_48dp;
+        this.icon = R.drawable.ic_devices_other_darkgrey_48dp;
         this.player = null;
         this.playerIcon = null;
     }

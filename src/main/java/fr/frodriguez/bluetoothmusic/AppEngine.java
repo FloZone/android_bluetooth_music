@@ -69,19 +69,19 @@ public final class AppEngine {
             int icon;
             switch (pairedDevice.getBluetoothClass().getMajorDeviceClass()) {
                 case BluetoothClass.Device.Major.AUDIO_VIDEO:
-                    icon = R.drawable.ic_headset_black_48dp;
+                    icon = R.drawable.ic_headset_darkgrey_48dp;
                     break;
                 case BluetoothClass.Device.Major.COMPUTER:
-                    icon = R.drawable.ic_laptop_chromebook_black_48dp;
+                    icon = R.drawable.ic_laptop_mac_darkgrey_48dp;
                     break;
                 case BluetoothClass.Device.Major.PHONE:
-                    icon = R.drawable.ic_phone_android_black_48dp;
+                    icon = R.drawable.ic_phone_android_darkgrey_48dp;
                     break;
                 case BluetoothClass.Device.Major.WEARABLE:
-                    icon = R.drawable.ic_watch_black_48dp;
+                    icon = R.drawable.ic_watch_darkgrey_48dp;
                     break;
                 default:
-                    icon = R.drawable.ic_devices_other_black_48dp;
+                    icon = R.drawable.ic_devices_other_darkgrey_48dp;
                     break;
             }
             btDevice.icon = icon;

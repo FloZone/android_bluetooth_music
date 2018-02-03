@@ -37,6 +37,7 @@ import fr.frodriguez.bluetoothmusic.defines.Preferences;
  */
 
 //TODO associate a list of app to a bt device
+//TODO btn refresh bt list on main
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.switchButton)
@@ -118,6 +119,14 @@ public class MainActivity extends AppCompatActivity {
         // Enable or disable the "watcher"
         spe.putBoolean(Preferences.KEY_ENABLED, switchButton.isChecked());
         spe.apply();
+    }
+
+    /**
+     * On refresh button click
+     */
+    @OnClick(R.id.btnRefresh)
+    public void onRefreshBtnClick() {
+        populateListview();
     }
 
 }

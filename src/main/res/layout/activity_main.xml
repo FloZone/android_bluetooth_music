@@ -6,23 +6,30 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
-        android:orientation="horizontal"
-        android:layout_centerHorizontal="true"
-        android:gravity="center">
+        android:gravity="center_vertical">
         <com.kyleduo.switchbutton.SwitchButton
             android:id="@+id/switchButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:layout_centerInParent="true"
             app:kswThumbWidth="30dp"
             app:kswThumbHeight="30dp"
             app:kswBackMeasureRatio="2"
             app:kswThumbMargin="3dp" />
-    </LinearLayout>
+        <ImageButton
+            android:id="@+id/btnRefresh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/ic_refresh_darkgrey_48dp"
+            android:contentDescription="@string/refresh" />
+    </RelativeLayout>
 
     <ListView
         android:id="@+id/listView"

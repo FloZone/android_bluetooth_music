@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="icon">icône</string>
+    <string name="title">titre</string>
+    <string name="subtitle">sous-titre</string>
+    <string name="select_player">Choisir un lecteur</string>
+    <string name="other_player_package">Nom de package de lecteur</string>
+    <string name="done">fait</string>
+    <string name="settings">Paramètres</string>
+    <string name="pref_reset">Réinitialiser les données</string>
+    <string name="pref_category_settings">Paramètres</string>
+    <string name="pref_volume_enable">Forcer le volume</string>
+    <string name="pref_volume">Volume</string>
+    <string name="pref_stop_playback">Forcer l\'arrêt de la lecture à la déconnexion</string>
+    <string name="pref_disable_bt">Désactiver le bluetooth à la déconnexion</string>
+    <string name="pref_category_battery">Batterie</string>
+    <string name="pref_watch_battery">Désactiver l\'application si la batterie est faible</string>
+    <string name="pref_battery_level">Niveau de batterie</string>
+    <string name="pref_start_ui">Démarrer tous les lecteurs avec l\'interface</string>
+    <string name="pref_desc_start_ui">Certains lecteur (ex: Spotify) ne peuvent être démarré qu\'avec l\'interface</string>
+    <string name="pref_category_about">A propos</string>
+    <string name="pref_tuto">A propos de cette application</string>
+    <string name="pref_version">Version</string>
+    <string name="pref_license">Licences</string>
+    <string name="pref_reset_confirmation">Voulez-vous vraiment réinitialiser les données ?</string>
+    <string name="toast_enable_bluetooth">Veuillez activer le bluetooth</string>
+    <string name="toast_error_paired_devices">Erreur lors de la récupération des appareils bluetooth</string>
+    <string name="toast_is_connected"> est maintenant connecté :)</string>
+    <string name="toast_is_disconnected"> est maintenant déconnecté :(</string>
+    <string name="refresh">actualiser</string>
+</resources>

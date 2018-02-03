@@ -37,7 +37,6 @@ import fr.frodriguez.bluetoothmusic.defines.Preferences;
  */
 
 //TODO associate a list of app to a bt device
-//TODO btn refresh bt list on main
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.switchButton)

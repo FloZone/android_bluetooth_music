@@ -1,10 +1,8 @@
 package fr.frodriguez.bluetoothmusic.activity;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -30,6 +28,7 @@ import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import fr.frodriguez.bluetoothmusic.R;
 import fr.frodriguez.bluetoothmusic.defines.Preferences;
@@ -107,7 +106,11 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         WebView webView = dialogview.findViewById(R.id.tv_tuto);
         webView.getSettings().setCacheMode(WebSettings.LOAD_NO_CACHE);
         webView.setScrollbarFadingEnabled(false);
-        webView.loadUrl("file:///android_asset/about.html");
+        if(Locale.getDefault().getLanguage().equals(Locale.FRENCH.getLanguage())) {
+            webView.loadUrl("file:///android_asset/about-fr.html");
+        } else {
+            webView.loadUrl("file:///android_asset/about.html");
+        }
         final AlertDialog alertDialog = new AlertDialog.Builder(getActivity()).create();
         alertDialog.setView(dialogview);
         findPreference(Preferences.KEY_TUTO).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {

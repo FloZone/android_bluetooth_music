@@ -2,7 +2,6 @@ package fr.frodriguez.bluetoothmusic;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,7 @@ import java.util.List;
 @SuppressWarnings("WeakerAccess")
 public class PlayerListviewAdapter extends ArrayAdapter<Player> {
 
-    public PlayerListviewAdapter(@Nullable Context context, @NonNull List<Player> players) {
+    public PlayerListviewAdapter(@NonNull Context context, @NonNull List<Player> players) {
         super(context, 0, players);
     }
 
@@ -35,9 +34,9 @@ public class PlayerListviewAdapter extends ArrayAdapter<Player> {
         SecondIconTwoTextViewHolder viewHolder = (SecondIconTwoTextViewHolder) convertView.getTag();
         if (viewHolder == null) {
             viewHolder = new SecondIconTwoTextViewHolder();
-            viewHolder.icon = (ImageView) convertView.findViewById(R.id.icon);
-            viewHolder.title = (TextView) convertView.findViewById(R.id.title);
-            viewHolder.subtitle = (TextView) convertView.findViewById(R.id.subtitle);
+            viewHolder.icon = convertView.findViewById(R.id.icon);
+            viewHolder.title = convertView.findViewById(R.id.title);
+            viewHolder.subtitle = convertView.findViewById(R.id.subtitle);
             convertView.setTag(viewHolder);
         }
 

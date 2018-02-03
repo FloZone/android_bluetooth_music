@@ -49,10 +49,10 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
         TwoIconTwoTextViewHolder viewHolder = (TwoIconTwoTextViewHolder) convertView.getTag();
         if (viewHolder == null) {
             viewHolder = new TwoIconTwoTextViewHolder();
-            viewHolder.icon1 = (ImageView) convertView.findViewById(R.id.icon1);
-            viewHolder.title = (TextView) convertView.findViewById(R.id.title);
-            viewHolder.subtitle = (TextView) convertView.findViewById(R.id.subtitle);
-            viewHolder.icon2 = (ImageView) convertView.findViewById(R.id.icon2);
+            viewHolder.icon1 = convertView.findViewById(R.id.icon1);
+            viewHolder.title = convertView.findViewById(R.id.title);
+            viewHolder.subtitle = convertView.findViewById(R.id.subtitle);
+            viewHolder.icon2 = convertView.findViewById(R.id.icon2);
             convertView.setTag(viewHolder);
         }
 
@@ -94,7 +94,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
                 btDevice.player = null;
                 AppEngine.saveWatchedState(getContext(), btDevice);
                 btView.setBackgroundResource(R.color.colorBackground);
-                ImageView playerIcon = (ImageView) btView.findViewById(R.id.icon2);
+                ImageView playerIcon = btView.findViewById(R.id.icon2);
                 if(playerIcon != null) {
                     playerIcon.setImageDrawable(null);
                 }
@@ -107,7 +107,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
 
                 // LISTVIEW
                 // Create the listview of available players
-                ListView playerListview = (ListView) dialogView.findViewById(R.id.listView);
+                ListView playerListview = dialogView.findViewById(R.id.listView);
                 final PlayerListviewAdapter adapter = new PlayerListviewAdapter(getContext(), AppEngine.PLAYER_LIST);
                 playerListview.setAdapter(adapter);
                 // When clicking on a player, save it for the bt device
@@ -122,8 +122,8 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
                 });
 
                 // EDITTEXT
-                final EditText etOtherPlayer = (EditText) dialogView.findViewById(R.id.etOtherPlayer);
-                final ImageButton btnOtherPlayer = (ImageButton) dialogView.findViewById(R.id.btnOtherPlayer);
+                final EditText etOtherPlayer = dialogView.findViewById(R.id.etOtherPlayer);
+                final ImageButton btnOtherPlayer = dialogView.findViewById(R.id.btnOtherPlayer);
                 btnOtherPlayer.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -171,7 +171,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
         btDevice.playerIcon = icon;
         AppEngine.saveWatchedState(getContext(), btDevice);
         btview.setBackgroundResource(R.color.colorBackgroundSelected);
-        ImageView playerIcon = (ImageView) btview.findViewById(R.id.icon2);
+        ImageView playerIcon = btview.findViewById(R.id.icon2);
         if(playerIcon != null) {
             playerIcon.setImageDrawable(icon);
         }

@@ -25,7 +25,7 @@
     <string name="pref_reset_confirmation">Voulez-vous vraiment réinitialiser les données ?</string>
     <string name="toast_enable_bluetooth">Veuillez activer le bluetooth</string>
     <string name="toast_error_paired_devices">Erreur lors de la récupération des appareils bluetooth</string>
-    <string name="toast_is_connected"> est maintenant connecté :)</string>
-    <string name="toast_is_disconnected"> est maintenant déconnecté :(</string>
+    <string name="toast_is_connected">%s est maintenant connecté :)</string>
+    <string name="toast_is_disconnected">%s est maintenant déconnecté :(</string>
     <string name="refresh">actualiser</string>
 </resources>

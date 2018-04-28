@@ -5,6 +5,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.widget.Toast;
 
@@ -21,19 +22,19 @@ import fr.frodriguez.library.utils.AppUtils;
 public class MainReceiver extends BroadcastReceiver {
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+    public void onReceive(final Context context, Intent intent) {
         String action = intent.getAction();
         if (action == null) return;
 
         // If the app is not "enabled"
         if(!AppEngine.isAppEnabled(context)) return;
 
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
+        final SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         // When a bluetooth device connects
         if (action.equals(BluetoothDevice.ACTION_ACL_CONNECTED)) {
 
             // Get the device object
-            BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
+            final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             // If it is watched
             if (sp.contains(device.getAddress())) {
                 // Cancel the alarm which disable the bluetooth
@@ -43,9 +44,15 @@ public class MainReceiver extends BroadcastReceiver {
                         context.getResources().getString(R.string.toast_is_connected, device.getName()),
                         Toast.LENGTH_LONG).show();
 
-                // Get the music player to start and start it
-                String packageName = sp.getString(device.getAddress(), null);
-                AppEngine.startPlayer(context, packageName);
+                // Get the music player to start and start it after few seconds
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        String packageName = sp.getString(device.getAddress(), null);
+                        AppEngine.startPlayer(context, packageName);
+                    }
+                }, 1000 * 3);
             }
         }
 

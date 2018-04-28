@@ -31,6 +31,11 @@ import fr.frodriguez.bluetoothmusic.defines.Preferences;
  */
 
 //TODO associate a list of app to a bt device
+//TODO trad for toast texts
+//TODO add com.maxmpz.audioplayer, com.maxmpz.audioplayer.unlock, com.sonyericsson.music
+//TODO tuto showcaseview au premier lancement
+//TODO custom players started without UI by default
+//TODO each players started without UI, add an option to force start with UI
 public class MainActivity extends AppCompatActivity {
 
     @BindView(R.id.switchButton)

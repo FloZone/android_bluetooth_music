@@ -47,7 +47,7 @@ public final class AppEngine {
         else if(sp.getBoolean(Preferences.KEY_WATCH_BATTERY, Preferences.KEY_WATCH_BATTERY_DEFAULT)) {
             int watchedBatteryLevel = Integer.valueOf(sp.getString(Preferences.KEY_BATTERY_LEVEL, Preferences.KEY_BATTERY_LEVEL_DEFAULT));
             int deviceBatteryLevel = AppUtils.getBatteryLevel(context);
-            if(deviceBatteryLevel <= watchedBatteryLevel) return false;
+            return deviceBatteryLevel > watchedBatteryLevel;
         }
 
         return true;

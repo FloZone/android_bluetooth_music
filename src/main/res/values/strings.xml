@@ -29,4 +29,6 @@
     <string name="toast_is_connected">%s is now connected :)</string>
     <string name="toast_is_disconnected">%s is now disconnected :(</string>
     <string name="refresh">refresh</string>
+    <string name="package_not_exists">This package does not exist</string>
+    <string name="package_empty">Package cannot be empty</string>
 </resources>

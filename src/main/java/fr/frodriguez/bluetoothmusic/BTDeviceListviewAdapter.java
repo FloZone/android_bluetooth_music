@@ -130,7 +130,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
                         // Get the packageName
                         String packageName = etOtherPlayer.getText().toString();
                         if(StringUtils.isEmpty(packageName)) {
-                            etOtherPlayer.setError("Package cannot be empty");
+                            etOtherPlayer.setError(getContext().getResources().getString(R.string.package_empty));
                             return;
                         }
                         // Get the package icon
@@ -140,7 +140,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
                             ApplicationInfo info = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
                             icon = packageManager.getApplicationIcon(info);
                         } catch (Exception ignored) {
-                            etOtherPlayer.setError("This package does not exist");
+                            etOtherPlayer.setError(getContext().getResources().getString(R.string.package_not_exists));
                             return;
                         }
                         // Watch the device with the given player
@@ -175,7 +175,6 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
         if(playerIcon != null) {
             playerIcon.setImageDrawable(icon);
         }
-        Toast.makeText(getContext(), "Watching for " + btDevice.name + " connection", Toast.LENGTH_SHORT).show();
         dismissDialog();
     }
 

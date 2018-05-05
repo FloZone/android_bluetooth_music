@@ -6,6 +6,9 @@ package fr.frodriguez.bluetoothmusic.defines;
 
 public final class Preferences {
 
+    public final static String SPSUFFIX_PLAYER = "_player";
+    public final static String SPSUFFIX_STARTMETHOD = "_startmethod";
+
     public final static String KEY_ENABLED = "sp_enabled";
     public final static boolean ENABLED_DEFAULT = false;
 

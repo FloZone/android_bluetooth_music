@@ -36,7 +36,7 @@ public class MainReceiver extends BroadcastReceiver {
             // Get the device object
             final BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             // If it is watched
-            if (sp.contains(device.getAddress())) {
+            if (sp.contains(device.getAddress() + Preferences.SPSUFFIX_PLAYER)) {
                 // Cancel the alarm which disable the bluetooth
                 AppEngine.cancelDisableBluetoothAlarm(context);
 
@@ -44,15 +44,18 @@ public class MainReceiver extends BroadcastReceiver {
                         context.getResources().getString(R.string.toast_is_connected, device.getName()),
                         Toast.LENGTH_LONG).show();
 
-                // Get the music player to start and start it after few seconds
+                // Get the music player to start & its start method and start it after few seconds
                 final Handler handler = new Handler();
                 handler.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        String packageName = sp.getString(device.getAddress(), null);
-                        AppEngine.startPlayer(context, packageName);
+                        String packageName = sp.getString(device.getAddress() + Preferences.SPSUFFIX_PLAYER, null);
+                        if(packageName != null) {
+                            int startMethod = sp.getInt(device.getAddress() + Preferences.SPSUFFIX_STARTMETHOD, AppEngine.getStartMethod(packageName));
+                            AppEngine.startPlayer(context, packageName, startMethod);
+                        }
                     }
-                }, 1000 * 3);
+                }, AppDefines.START_PLAYER_DELAY);
             }
         }
 
@@ -61,7 +64,7 @@ public class MainReceiver extends BroadcastReceiver {
             // Get the device object
             BluetoothDevice device = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
             // If it is watched
-            if (sp.contains(device.getAddress())) {
+            if (sp.contains(device.getAddress() + Preferences.SPSUFFIX_PLAYER)) {
                 Toast.makeText(context,
                         context.getResources().getString(R.string.toast_is_disconnected, device.getName()),
                         Toast.LENGTH_LONG).show();

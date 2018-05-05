@@ -21,6 +21,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import fr.frodriguez.bluetoothmusic.defines.AppDefines;
 import fr.frodriguez.library.utils.StringUtils;
 
 /**
@@ -30,7 +31,7 @@ import fr.frodriguez.library.utils.StringUtils;
  * Touch a bluetooth device to select the music player to start when it will connect.
  */
 @SuppressWarnings("WeakerAccess")
-public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements AdapterView.OnItemClickListener {
+public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
 
     private AlertDialog dialog;
 
@@ -53,6 +54,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
             viewHolder.title = convertView.findViewById(R.id.title);
             viewHolder.subtitle = convertView.findViewById(R.id.subtitle);
             viewHolder.icon2 = convertView.findViewById(R.id.icon2);
+            viewHolder.icon3 = convertView.findViewById(R.id.icon3);
             convertView.setTag(viewHolder);
         }
 
@@ -74,8 +76,16 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
             // Row in green if the device is watched
             if (btDevice.player != null) {
                 convertView.setBackgroundResource(R.color.colorBackgroundSelected);
+
+                // Little icon if this player will be starter with UI, only if the device is watched
+                if (btDevice.startMethod == AppDefines.START_METHOD_WITHUI) {
+                    viewHolder.icon3.setImageResource(R.drawable.ic_fullscreen_darkgrey_24dp);
+                } else {
+                    viewHolder.icon3.setImageDrawable(null);
+                }
             } else {
                 convertView.setBackgroundResource(R.color.colorBackground);
+                viewHolder.icon3.setImageDrawable(null);
             }
         }
 
@@ -92,11 +102,16 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
             // The device was "watched", unwatch it
             if (btDevice.player != null) {
                 btDevice.player = null;
+                btDevice.startMethod = AppDefines.START_METHOD_NOTSET;
                 AppEngine.saveWatchedState(getContext(), btDevice);
                 btView.setBackgroundResource(R.color.colorBackground);
                 ImageView playerIcon = btView.findViewById(R.id.icon2);
                 if(playerIcon != null) {
                     playerIcon.setImageDrawable(null);
+                }
+                ImageView startMethodIcon = btView.findViewById(R.id.icon3);
+                if(startMethodIcon != null) {
+                    startMethodIcon.setImageDrawable(null);
                 }
             }
             // Watch the device
@@ -160,6 +175,37 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
     }
 
     /**
+     * Switch between "start with UI" and "start with play keyevent" when long clicking on a device which is already watched
+     */
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View btView, int position, long id) {
+        final BTDevice btDevice = getItem(position);
+        if (btDevice != null) {
+            // The device was "watched", switch start method
+            if (btDevice.player != null) {
+                // Switch the current start method for this player
+                if(btDevice.startMethod == AppDefines.START_METHOD_KEYEVENT) {
+                    btDevice.startMethod = AppDefines.START_METHOD_WITHUI;
+                } else {
+                    btDevice.startMethod = AppDefines.START_METHOD_KEYEVENT;
+                }
+                // Save it
+                AppEngine.saveWatchedState(getContext(), btDevice);
+
+                // Display or not the "start method icon"
+                ImageView startMethodIcon = btView.findViewById(R.id.icon3);
+                if (btDevice.startMethod == AppDefines.START_METHOD_WITHUI) {
+                    startMethodIcon.setImageResource(R.drawable.ic_fullscreen_darkgrey_24dp);
+                } else {
+                    startMethodIcon.setImageDrawable(null);
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
      * Watch the btDevice with the given music player
      * @param btDevice      the bluetooth device to watch
      * @param packageName   the music player package name to starts when the device connects
@@ -168,12 +214,22 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
      */
     public void watchDevice(@NonNull BTDevice btDevice, @NonNull String packageName, @Nullable Drawable icon, @NonNull View btview) {
         btDevice.player = packageName;
+        btDevice.startMethod = AppEngine.getStartMethod(packageName);
         btDevice.playerIcon = icon;
         AppEngine.saveWatchedState(getContext(), btDevice);
+        // Set background color
         btview.setBackgroundResource(R.color.colorBackgroundSelected);
+        // Set player icon
         ImageView playerIcon = btview.findViewById(R.id.icon2);
         if(playerIcon != null) {
             playerIcon.setImageDrawable(icon);
+        }
+        // Display or not the "start method icon"
+        ImageView startMethodIcon = btview.findViewById(R.id.icon3);
+        if (btDevice.startMethod == AppDefines.START_METHOD_WITHUI) {
+            startMethodIcon.setImageResource(R.drawable.ic_fullscreen_darkgrey_24dp);
+        } else {
+            startMethodIcon.setImageDrawable(null);
         }
         dismissDialog();
     }
@@ -193,6 +249,7 @@ public class BTDeviceListviewAdapter extends ArrayAdapter<BTDevice> implements A
         TextView title;
         TextView subtitle;
         ImageView icon2;
+        ImageView icon3;
     }
 
 }

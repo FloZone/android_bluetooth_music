@@ -86,7 +86,13 @@ public final class AppEngine {
             btDevice.icon = icon;
 
             // Get the music player for this device if it is watched
-            btDevice.player = sp.getString(btDevice.mac, null);
+            btDevice.player = sp.getString(btDevice.mac + Preferences.SPSUFFIX_PLAYER, null);
+            // Get its start method if set
+            if(btDevice.player == null) {
+                btDevice.startMethod = AppDefines.START_METHOD_NOTSET;
+            } else {
+                btDevice.startMethod = sp.getInt(btDevice.mac + Preferences.SPSUFFIX_STARTMETHOD, AppDefines.START_METHOD_NOTSET);
+            }
 
             // Get the player icon if the device is watched
             if(btDevice.player != null) {
@@ -96,6 +102,7 @@ public final class AppEngine {
                 } catch (Exception ignored) {
                     // Exception thrown if the player app no longer exists, so unwatch the device
                     btDevice.player = null;
+                    btDevice.startMethod = AppDefines.START_METHOD_NOTSET;
                     btDevice.playerIcon = null;
                     sp.edit().remove(btDevice.mac).apply();
                 }
@@ -130,11 +137,23 @@ public final class AppEngine {
     }
 
     /**
+     * Get the start method for the given player
+     */
+    public static int getStartMethod(@NonNull String packageName) {
+        // If the player is not supported, start it without UI
+        if(!AppDefines.SUPPORTED_PLAYERS.containsKey(packageName)) {
+            return AppDefines.START_METHOD_KEYEVENT;
+        }
+        // Else, set the known start method for this player
+        else {
+            return AppDefines.SUPPORTED_PLAYERS.get(packageName);
+        }
+    }
+
+    /**
      * Starts the given music player with the correct method
      */
-    public static void startPlayer(@NonNull Context context, @Nullable String packageName) {
-        if (packageName == null) return;
-
+    public static void startPlayer(@NonNull Context context, @NonNull String packageName, int startMethod) {
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(context);
         // Set the audio volume if the option is enabled
         if(sp.getBoolean(Preferences.KEY_VOLUME_ENABLE, Preferences.KEY_VOLUME_ENABLE_DEFAULT)) {
@@ -146,18 +165,11 @@ public final class AppEngine {
             }
         }
 
-        int startMethod;
-        // If the player is not supported,
-        // or if "start with UI" option if enabled,
-        // start the player with UI (captain obvious)
-        if(!AppDefines.SUPPORTED_PLAYERS.containsKey(packageName)
-            || sp.getBoolean(Preferences.KEY_START_UI, Preferences.KEY_START_UI_DEFAULT)) {
+        // If "start with UI for all players" option if enabled, force start the player with UI (captain obvious)
+        if(sp.getBoolean(Preferences.KEY_START_UI, Preferences.KEY_START_UI_DEFAULT)) {
             startMethod = AppDefines.START_METHOD_WITHUI;
         }
-        // Else, set the known start method for this player
-        else {
-            startMethod = AppDefines.SUPPORTED_PLAYERS.get(packageName);
-        }
+
         switch (startMethod) {
             case AppDefines.START_METHOD_KEYEVENT:
                 AppEngine.startPlayerKeyevent(context, packageName);
@@ -221,7 +233,7 @@ public final class AppEngine {
             public void run() {
                 startPlayerKeyevent(context, packageName);
             }
-        }, 1000 * 5);
+        }, AppDefines.START_PLAYER_DELAY);
     }
 
     /**
@@ -230,8 +242,15 @@ public final class AppEngine {
      */
     public static void saveWatchedState(@NonNull Context context, @NonNull BTDevice btDevice) {
         SharedPreferences.Editor spe = PreferenceManager.getDefaultSharedPreferences(context).edit();
-        // If btDevice.player == null, equivalent to spe.remove(key)
-        spe.putString(btDevice.mac, btDevice.player);
+        // If btDevice.player == null, remove stored values
+        if(btDevice.player == null) {
+            spe.remove(btDevice.mac + Preferences.SPSUFFIX_PLAYER);
+            spe.remove(btDevice.mac + Preferences.SPSUFFIX_STARTMETHOD);
+
+        } else {
+            spe.putString(btDevice.mac + Preferences.SPSUFFIX_PLAYER, btDevice.player);
+            spe.putInt(btDevice.mac + Preferences.SPSUFFIX_STARTMETHOD, btDevice.startMethod);
+        }
         spe.apply();
     }
 

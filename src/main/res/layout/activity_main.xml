@@ -10,6 +10,7 @@
         android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="48dp"
+        android:layout_margin="16dp"
         android:gravity="center_vertical">
         <com.kyleduo.switchbutton.SwitchButton
             android:id="@+id/switchButton"
@@ -29,6 +30,7 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/ic_refresh_darkgrey_48dp"
             android:contentDescription="@string/refresh" />
+
     </RelativeLayout>
 
     <ListView
